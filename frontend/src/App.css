@@ -1,9 +1,16 @@
-.header{
-background-color: black;
-display: flex;
-color: white;
-padding: 15px 10px;
-font-weight: bold;
-font-size: 30px;
-
-};
+.header {
+  background-color: black;
+  display: flex;
+  color: white;
+  padding: 15px 10px;
+  font-weight: bold;
+  font-size: 30px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
