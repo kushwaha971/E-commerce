@@ -1,8 +1,9 @@
 import React, { useEffect, useReducer } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Stack, Typography } from "@mui/material";
 import { productDetails } from "../services/APIServices";
 import logger from "use-reducer-logger";
 import Product from "../component/Product";
+import MessageBox from "../component/MessageBox";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,14 +39,18 @@ function HomeScreen() {
   }, []);
   return (
     <React.Fragment>
-      <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold", margin: "1rem" }}>
+      <Typography
+        sx={{ fontSize: "1.5rem", fontWeight: "bold", marginLeft: "1rem" }}
+      >
         Features Products
       </Typography>
       <Box>
         {loading ? (
-          <Typography>Loading....</Typography>
+          <Stack sx={{ display: "flex" }}>
+            <CircularProgress color="success" sx={{ margin: "auto" }} />
+          </Stack>
         ) : error ? (
-          <Typography>{error}</Typography>
+          <MessageBox variant="error">{error}</MessageBox>
         ) : (
           <Grid spacing={2} sx={{ justifyContent: "center" }} container>
             {products.map((product) => (

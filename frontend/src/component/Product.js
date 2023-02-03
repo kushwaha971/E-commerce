@@ -67,7 +67,7 @@ function Product(Props) {
             <strong>${product.price}</strong>
           </Typography>
           <CardActions>
-            <Button variant="contained" fullWidth>
+            <Button variant="contained" fullWidth color="warning">
               Add to Cart
             </Button>
           </CardActions>

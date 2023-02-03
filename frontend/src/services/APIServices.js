@@ -3,3 +3,7 @@ import axios from "axios";
 export const productDetails = axios.create({
   baseURL: "/api/products",
 });
+
+export const productStatus = axios.create({
+  baseURL: "/api/products/slug",
+});
