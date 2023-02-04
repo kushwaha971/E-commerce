@@ -12,6 +12,7 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+// import { Store } from "../context/Store";
 
 const ProductStyle = styled(Box)(({ theme }) => ({
   ".productImage": {
@@ -29,6 +30,18 @@ const ProductStyle = styled(Box)(({ theme }) => ({
 
 function Product(Props) {
   const { product } = Props;
+  // const {state, dispatch: contextDispatch} = useContext(Store);
+
+  // const addToCartHandler = () => {
+    
+  //   contextDispatch({
+  //     type: "CART_ADD_ITEM",
+  //     payload: { ...product, quantity: 1 },
+      
+  //   });
+    // console.log(state.cart.cartItems.length); 
+   
+  // };
   return (
     <ProductStyle>
       <Card className="product">

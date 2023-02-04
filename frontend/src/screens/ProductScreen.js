@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import {
   Box,
   Button,
@@ -11,11 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { productStatus } from "../services/APIServices";
+import { cartItems, productStatus } from "../services/APIServices";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { getError } from "../utils";
 import MessageBox from "../component/MessageBox";
-
+import { Store } from "../context/Store";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -52,12 +52,31 @@ function ProductScreen() {
     };
     fetchData();
   }, [slug]);
+
+  const { state, dispatch: contextDispatch } = useContext(Store);
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    // console.log(existItem.quantity);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    // console.log(quantity)
+    const data = await cartItems.get(`/${product._id}`);
+    if(data.countStock < quantity){
+      window.alert('Sorry, Product is out of stock');
+      return;
+    }
+
+    contextDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product, quantity },
+    });
+  };
   return (
     <React.Fragment>
       {loading ? (
         <Stack sx={{ display: "flex" }}>
-            <CircularProgress color="success" sx={{ margin: "auto" }} />
-          </Stack>
+          <CircularProgress color="success" sx={{ margin: "auto" }} />
+        </Stack>
       ) : error ? (
         <MessageBox variant="error">{error}</MessageBox>
       ) : (
@@ -128,6 +147,7 @@ function ProductScreen() {
                     fullWidth
                     color="warning"
                     sx={{ margin: "10px 0px" }}
+                    onClick={addToCartHandler}
                   >
                     Add to Cart
                   </Button>

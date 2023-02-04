@@ -7,3 +7,7 @@ export const productDetails = axios.create({
 export const productStatus = axios.create({
   baseURL: "/api/products/slug",
 });
+
+export const cartItems = axios.create({
+  baseURL: "/api/products",
+})
