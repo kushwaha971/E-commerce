@@ -6,11 +6,12 @@ import ProductScreen from "./screens/ProductScreen";
 import { Badge, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Store } from "./context/Store";
+import CartScreen from "./screens/CartScreen";
+import SignInScreen from "./screens/SignInScreen";
 
 function App() {
-  
-  const {state} = useContext(Store);
-  const {cart} = state;
+  const { state } = useContext(Store);
+  const { cart } = state;
   return (
     <React.Fragment>
       <div className="container">
@@ -19,11 +20,17 @@ function App() {
             <div className="header">
               <Link to="/">Logo</Link>
               <Link to="/cart">
-              <Stack aria-label="cart">
-                <Badge badgeContent={cart.cartItems.reduce((acc,curr) => acc+curr.quantity, 0)} color="secondary">
-                  <ShoppingCartIcon sx={{ color: "white" }} />
-                </Badge>
-              </Stack>
+                <Stack aria-label="cart">
+                  <Badge
+                    badgeContent={cart.cartItems.reduce(
+                      (acc, curr) => acc + curr.quantity,
+                      0
+                    )}
+                    color="secondary"
+                  >
+                    <ShoppingCartIcon sx={{ color: "white" }} />
+                  </Badge>
+                </Stack>
               </Link>
             </div>
           </header>
@@ -32,6 +39,8 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeScreen />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
+              <Route path="/signin" element={<SignInScreen/>}/>
             </Routes>
           </main>
           <footer>

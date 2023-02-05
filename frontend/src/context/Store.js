@@ -3,13 +3,15 @@ import React, { useReducer } from "react";
 export const Store = React.createContext();
 const intialState = {
   cart: {
-    cartItems: [],
+    cartItems: localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [],
   },
 };
 function reducer(state, action) {
   switch (action.type) {
     case "CART_ADD_ITEM":
-      // add to cart
+      // Add item to cart
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
         (item) => item._id === newItem._id
@@ -20,7 +22,20 @@ function reducer(state, action) {
           )
         : [...state.cart.cartItems, newItem];
 
+      // Add Item to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
       return { ...state, cart: { ...state.cart, cartItems } };
+
+    case "CART_REMOVE_ITEM": {
+      //  Remoce item to cart
+      const cartItems = state.cart.cartItems.filter(
+        (item) => item._id !== action.payload._id
+      );
+      // Add Item to local storage
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      return { ...state, cart: { ...state.cart, cartItems } };
+    }
 
     default:
       return state;

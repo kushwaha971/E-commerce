@@ -10,12 +10,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { cartItems, productStatus } from "../services/APIServices";
+import { useNavigate, useParams } from "react-router-dom";
+import { cartItemDetails, productStatus } from "../services/APIServices";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { getError } from "../utils";
 import MessageBox from "../component/MessageBox";
 import { Store } from "../context/Store";
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +32,7 @@ const reducer = (state, action) => {
 };
 
 function ProductScreen() {
+  const nevigate = useNavigate();
   const params = useParams();
   const { slug } = params;
 
@@ -57,12 +59,10 @@ function ProductScreen() {
   const { cart } = state;
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
-    // console.log(existItem.quantity);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    // console.log(quantity)
-    const data = await cartItems.get(`/${product._id}`);
-    if(data.countStock < quantity){
-      window.alert('Sorry, Product is out of stock');
+    const data = await cartItemDetails.get(`/${product._id}`);
+    if (data.countStock < quantity) {
+      window.alert("Sorry, Product is out of stock");
       return;
     }
 
@@ -70,6 +70,7 @@ function ProductScreen() {
       type: "CART_ADD_ITEM",
       payload: { ...product, quantity },
     });
+    nevigate("/cart");
   };
   return (
     <React.Fragment>
@@ -146,7 +147,7 @@ function ProductScreen() {
                     variant="contained"
                     fullWidth
                     color="warning"
-                    sx={{ margin: "10px 0px" }}
+                    sx={{ margin: "10px 0px",borderRadius: "25px" }}
                     onClick={addToCartHandler}
                   >
                     Add to Cart

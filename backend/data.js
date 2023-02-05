@@ -7,7 +7,7 @@ const data = {
             category: 'Shirts',
             image:'/images/d1.jpg', //697px * 829px
             price: 450,
-            countStock: 10,
+            countStock: 1,
             brand: 'Nike',
             rating: 4.5,
             numReviews: 10,
@@ -46,7 +46,7 @@ const data = {
             category: 'Pants',
             image:'/images/p2.jpg',
             price: 450,
-            countStock: 10,
+            countStock: 0,
             brand: 'Adidas',
             rating: 4.5,
             numReviews: 12,

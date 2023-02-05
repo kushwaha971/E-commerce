@@ -9,9 +9,11 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { cartItemDetails } from "../services/APIServices";
+import { Store } from "../context/Store";
 // import { Store } from "../context/Store";
 
 const ProductStyle = styled(Box)(({ theme }) => ({
@@ -30,18 +32,26 @@ const ProductStyle = styled(Box)(({ theme }) => ({
 
 function Product(Props) {
   const { product } = Props;
-  // const {state, dispatch: contextDispatch} = useContext(Store);
 
-  // const addToCartHandler = () => {
-    
-  //   contextDispatch({
-  //     type: "CART_ADD_ITEM",
-  //     payload: { ...product, quantity: 1 },
-      
-  //   });
-    // console.log(state.cart.cartItems.length); 
-   
-  // };
+  const { state, dispatch: contextDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
+
+  const addToCartHandler = async (item) => {
+    const existItem = cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await cartItemDetails.get(`/${item._id}`);
+    if (data.countStock < quantity) {
+      window.alert("Sorry, Product is out of stock");
+      return;
+    }
+
+    contextDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...item, quantity },
+    });
+  };
   return (
     <ProductStyle>
       <Card className="product">
@@ -80,9 +90,32 @@ function Product(Props) {
             <strong>${product.price}</strong>
           </Typography>
           <CardActions>
-            <Button variant="contained" fullWidth color="warning">
-              Add to Cart
-            </Button>
+            {product.countStock === 0 ? (
+              <Button
+                disabled
+                sx={{
+                  "&.Mui-disabled": {
+                    background: "#eaeaea",
+                    color: "black",
+                  },
+                  textTransform: "capitalize",
+                  borderRadius: "25px",
+                }}
+                variant="outlined"
+              >
+                Out of Stock
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth
+                color="warning"
+                sx={{ textTransform: "capitalize", borderRadius: "25px" }}
+                onClick={() => addToCartHandler(product)}
+              >
+                Add to Cart
+              </Button>
+            )}
           </CardActions>
         </CardContent>
       </Card>
