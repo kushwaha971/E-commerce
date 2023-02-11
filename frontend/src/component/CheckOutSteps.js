@@ -1,7 +1,7 @@
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import React from "react";
 
-const steps = ["Sign In", "Shipping address", "Payment details"];
+const steps = ["Sign In", "Shipping address", "Payment details","Place Order"];
 
 function CheckOutSteps(props) {
   return (
