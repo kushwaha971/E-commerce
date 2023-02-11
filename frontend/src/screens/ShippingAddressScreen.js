@@ -130,7 +130,7 @@ function ShippingAddressScreen() {
                   type="submit"
                   sx={{ textTransform: "capitalize" }}
                 >
-                  Sign In
+                  Continue
                 </Button>
               </Form>
             )}

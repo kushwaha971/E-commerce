@@ -22,26 +22,24 @@ function PaymentMethodScreen() {
   return (
     <React.Fragment>
       <CheckOutSteps state={2} />
-      <Box sx={{ maxWidth: "400px", margin: "auto" }}>
+      <Box sx={{ maxWidth: "300px", margin: "4rem auto" }}>
+      <Typography sx={{margin: "2rem auto"}}>Payment Method</Typography>
         <Formik
           initialValues={{
-            paymentMethodName: paymentMethod || "Paypal",
+            paymentMethodName: ""
           }}
           onSubmit={(values) => {
-            console.log(values);
+            console.log(values.paymentMethodName);
             contextDispatch({
               type: "SAVE_PAYMENT_METHOD",
-              payload: values,
+              payload: values.paymentMethodName,
             });
-            localStorage.setItem("paymentMethod", values);
+            localStorage.setItem("paymentMethod", values.paymentMethodName);
             navigate("/placeorder");
           }}
         >
           {({ values }) => (
             <Form>
-              <br />
-              <Typography>Payment Method</Typography>
-              <br />
               <label>
                 <Field
                   type="radio"
@@ -65,7 +63,6 @@ function PaymentMethodScreen() {
               </label>
               <br />
               <br />
-
               <Button type="submit" variant="contained" color="warning">
                 Continue
               </Button>
