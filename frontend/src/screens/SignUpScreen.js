@@ -7,7 +7,7 @@ import { Store } from "../context/Store";
 import { toast } from "react-toastify";
 import { getError } from "../utils";
 
-function SignInScreen() {
+function SignUpScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const redirectURL = new URLSearchParams(search).get("redirect");
@@ -29,15 +29,28 @@ function SignInScreen() {
       </Typography>
       <Box sx={{ margin: "20px", dispaly: "flex", justifyContent: "center" }}>
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          }}
           onSubmit={async (values) => {
+            if (values.password !== values.confirmPassword) {
+              toast.error("Password does not match");
+              return;
+            }
+
             try {
-              const { data } = await axios.post("api/users/signin", {
+              const { data } = await axios.post("api/users/signup", {
+                name: values.name,
                 email: values.email,
                 password: values.password,
               });
+
               contextDispatch({ type: "USER_SIGNIN", payload: data });
               localStorage.setItem("userInfo", JSON.stringify(data));
+
               navigate(redirect || "/");
             } catch (err) {
               toast.error(getError(err));
@@ -46,6 +59,26 @@ function SignInScreen() {
         >
           {(values) => (
             <Form>
+              <Typography>
+                <span style={{ color: "red" }}>*</span>Full Name:
+              </Typography>
+
+              <Field
+                name="name"
+                type="text"
+                varaint="Outlined"
+                placeholder="Full Name"
+                style={{
+                  width: "100%",
+                  padding: "12px 20px",
+                  margin: "8px 0",
+                  display: "inline-block",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  marginBottom: "20px",
+                  boxSizing: "border-box",
+                }}
+              />
               <Typography>
                 <span style={{ color: "red" }}>*</span>E-mail:
               </Typography>
@@ -71,10 +104,29 @@ function SignInScreen() {
               </Typography>
 
               <Field
-                name="password"
+                name="confirmPassword"
                 type="password"
                 varaint="Outlined"
                 placeholder="Enter password"
+                style={{
+                  width: "100%",
+                  padding: "12px 20px",
+                  display: "inline-block",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  marginBottom: "20px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <Typography>
+                <span style={{ color: "red" }}>*</span>Confirm Password:
+              </Typography>
+
+              <Field
+                name="password"
+                type="password"
+                varaint="Outlined"
+                placeholder="Re-enter password"
                 style={{
                   width: "100%",
                   padding: "12px 20px",
@@ -92,18 +144,18 @@ function SignInScreen() {
                 type="submit"
                 sx={{ textTransform: "capitalize" }}
               >
-                Sign In
+                Sign Up
               </Button>
             </Form>
           )}
         </Formik>
         <Typography sx={{ margin: "0.5rem 0" }}>
-          New User?{" "}
-          <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
+          Already have an account?{" "}
+          <Link to={`/signin?redirect=${redirect}`}>Sing-In</Link>
         </Typography>
       </Box>
     </Box>
   );
 }
 
-export default SignInScreen;
+export default SignUpScreen;

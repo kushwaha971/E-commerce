@@ -6,8 +6,6 @@ import {
   Divider,
   IconButton,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,8 +17,7 @@ import { cartItemDetails } from "../services/APIServices";
 
 function CartScreen() {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -47,7 +44,7 @@ function CartScreen() {
     navigate("/signin?redirect=/shipping");
   };
   return (
-    <>
+    <Box sx={{ maxWidth: "400px", margin: "auto" }}>
       <Typography variant="h4" sx={{ margin: "1rem" }}>
         Shopping Cart
       </Typography>
@@ -76,7 +73,7 @@ function CartScreen() {
                       image={item.image}
                       alt={item.name}
                       sx={{
-                        width: `${isMatch ? "100px" : "40px"}`,
+                        width: "100px",
                         marginTop: "4px",
                       }}
                     />
@@ -84,7 +81,8 @@ function CartScreen() {
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: `${isMatch ? "column" : "row"}`,
+
+                      flexDirection: "column",
                       margin: "0.5rem",
                     }}
                   >
@@ -124,7 +122,10 @@ function CartScreen() {
                         }}
                         color="error"
                         variant="contained"
-                        sx={{ textTransform: "capitalize",borderRadius: "25px" }}
+                        sx={{
+                          textTransform: "capitalize",
+                          borderRadius: "25px",
+                        }}
                       >
                         Remove Item
                       </Button>
@@ -159,14 +160,18 @@ function CartScreen() {
               color="warning"
               onClick={CheckoutHandler}
               disabled={cartItems.length === 0}
-              sx={{ textTransform: "capitalize", margin: "4px",borderRadius: "25px" }}
+              sx={{
+                textTransform: "capitalize",
+                margin: "4px",
+                borderRadius: "25px",
+              }}
             >
               Proceed to Checkout
             </Button>
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }
 
