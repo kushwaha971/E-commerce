@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../context/Store";
+import CheckOutSteps from "../component/CheckOutSteps";
 
 function ShippingAddressScreen() {
   const navigate = useNavigate();
@@ -13,14 +14,14 @@ function ShippingAddressScreen() {
   } = state;
 
   useEffect(() => {
-    if(!userInfo) {
-        navigate('/signin?redirect=/shipping')
+    if (!userInfo) {
+      navigate("/signin?redirect=/shipping");
     }
-  })
+  });
   return (
     <React.Fragment>
+      <CheckOutSteps state={1} />
       <Box sx={{ maxWidth: "600px", margin: "auto" }}>
-        <Typography variant="h3">Shipping Address</Typography>
         <Box sx={{ margin: "20px", dispaly: "flex", justifyContent: "center" }}>
           <Formik
             initialValues={{

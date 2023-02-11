@@ -6,8 +6,6 @@ import {
   Divider,
   IconButton,
   Typography,
-  // useMediaQuery,
-  // useTheme,
 } from "@mui/material";
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,8 +17,7 @@ import { cartItemDetails } from "../services/APIServices";
 
 function CartScreen() {
   const navigate = useNavigate();
-  // const theme = useTheme();
-  // const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -76,8 +73,7 @@ function CartScreen() {
                       image={item.image}
                       alt={item.name}
                       sx={{
-                        // width: `${isMatch ? "100px" : "40px"}`,
-                        width: '100px',
+                        width: "100px",
                         marginTop: "4px",
                       }}
                     />
@@ -85,8 +81,8 @@ function CartScreen() {
                   <Box
                     sx={{
                       display: "flex",
-                      // flexDirection: `${isMatch ? "column" : "row"}`,
-                      flexDirection:"column",
+
+                      flexDirection: "column",
                       margin: "0.5rem",
                     }}
                   >

@@ -3,14 +3,16 @@ import "./App.css";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css'
+import "react-toastify/dist/ReactToastify.css";
 import ProductScreen from "./screens/ProductScreen";
-import { Badge,  Stack, Typography } from "@mui/material";
+import { Badge, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Store } from "./context/Store";
 import CartScreen from "./screens/CartScreen";
 import SignInScreen from "./screens/SignInScreen";
+import SignUpScreen from "./screens/SignUpScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
+import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -18,7 +20,8 @@ function App() {
   const SignOutHandler = () => {
     contextDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
-    localStorage.removeItem("shippingAddress")
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
   };
   return (
     <React.Fragment>
@@ -43,7 +46,7 @@ function App() {
               </Link>
               {userInfo ? (
                 <>
-                  <Typography>{userInfo.name}</Typography>{" "}{" "}
+                  <Typography>{userInfo.name}</Typography>{" "}
                   <Typography onClick={SignOutHandler}>Sign Out</Typography>
                 </>
               ) : (
@@ -58,7 +61,9 @@ function App() {
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SignInScreen />} />
-              <Route path="/shipping" element={<ShippingAddressScreen /> }/>
+              <Route path="/signup" element={<SignUpScreen />} />
+              <Route path="/shipping" element={<ShippingAddressScreen />} />
+              <Route path="/payment" element={<PaymentMethodScreen/>}/>
             </Routes>
           </main>
           <footer>

@@ -36,15 +36,21 @@ function SignUpScreen() {
             confirmPassword: "",
           }}
           onSubmit={async (values) => {
+            if (values.password !== values.confirmPassword) {
+              toast.error("Password does not match");
+              return;
+            }
+
             try {
-              const { data } = await axios.post("api/users/signin", {
+              const { data } = await axios.post("api/users/signup", {
                 name: values.name,
                 email: values.email,
                 password: values.password,
-                confirmPassword: values.password,
               });
+
               contextDispatch({ type: "USER_SIGNIN", payload: data });
               localStorage.setItem("userInfo", JSON.stringify(data));
+
               navigate(redirect || "/");
             } catch (err) {
               toast.error(getError(err));
@@ -98,7 +104,7 @@ function SignUpScreen() {
               </Typography>
 
               <Field
-                name="password"
+                name="confirmPassword"
                 type="password"
                 varaint="Outlined"
                 placeholder="Enter password"
@@ -144,8 +150,8 @@ function SignUpScreen() {
           )}
         </Formik>
         <Typography sx={{ margin: "0.5rem 0" }}>
-          Already have account?{" "}
-          <Link to={`/signin?redirect=${redirect}`}>Sing In</Link>
+          Already have an account?{" "}
+          <Link to={`/signin?redirect=${redirect}`}>Sing-In</Link>
         </Typography>
       </Box>
     </Box>
