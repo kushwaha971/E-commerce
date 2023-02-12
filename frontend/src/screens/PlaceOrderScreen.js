@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useReducer } from "react";
 import {
   Box,
   Button,
@@ -7,6 +7,8 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  CircularProgress,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -16,9 +18,30 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { Store } from "../context/Store";
 import CheckOutSteps from "../component/CheckOutSteps";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
+import axios from "axios";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CREATE_REQUEST":
+      return { ...state, loading: true };
+    case "CREATE_SUCCESS":
+      return { ...state, loading: false };
+    case "CREATE_FAIL":
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
 
 function PlaceOrderScreen() {
   const navigate = useNavigate();
+
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: false,
+  });
+
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
@@ -38,7 +61,36 @@ function PlaceOrderScreen() {
     { title: "Total", value: `${cart.totalPrice.toFixed(2)}` },
   ];
 
-  const placeOrderHandler = async () => {};
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: "CREATE_REQUEST" });
+
+      const { data } = await axios.post(
+        "/api/orders",
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      contextDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE_SUCCESS" });
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`);
+    } catch (err) {
+      dispatch({ type: "CREATE_FAIL" });
+      toast.error(getError(err));
+    }
+  };
   React.useEffect(() => {
     if (!cart.paymentMethod) {
       navigate("/payment");
@@ -46,7 +98,7 @@ function PlaceOrderScreen() {
   });
   return (
     <React.Fragment>
-        <CheckOutSteps state={3} />
+      <CheckOutSteps state={3} />
       <Typography variant="h4">Preview Order</Typography>
       <Box
         sx={{
@@ -145,6 +197,11 @@ function PlaceOrderScreen() {
                 >
                   Place Order
                 </Button>
+                {loading && (
+                  <Stack sx={{ display: "flex" }}>
+                    <CircularProgress color="success" sx={{ margin: "auto" }} />
+                  </Stack>
+                )}
               </CardActions>
             </CardContent>
           </Card>

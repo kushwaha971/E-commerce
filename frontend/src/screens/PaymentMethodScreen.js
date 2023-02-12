@@ -10,7 +10,7 @@ function PaymentMethodScreen() {
 
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
-    cart: { shippingAddress, paymentMethod },
+    cart: { shippingAddress },
   } = state;
 
   React.useEffect(() => {
@@ -23,10 +23,10 @@ function PaymentMethodScreen() {
     <React.Fragment>
       <CheckOutSteps state={2} />
       <Box sx={{ maxWidth: "300px", margin: "4rem auto" }}>
-      <Typography sx={{margin: "2rem auto"}}>Payment Method</Typography>
+        <Typography sx={{ margin: "2rem auto" }}>Payment Method</Typography>
         <Formik
           initialValues={{
-            paymentMethodName: ""
+            paymentMethodName: "",
           }}
           onSubmit={(values) => {
             console.log(values.paymentMethodName);
