@@ -17,7 +17,7 @@ function ShippingAddressScreen() {
     if (!userInfo) {
       navigate("/signin?redirect=/shipping");
     }
-  });
+  },[userInfo, navigate]);
   return (
     <React.Fragment>
       <CheckOutSteps state={1} />
@@ -31,6 +31,7 @@ function ShippingAddressScreen() {
               postal: shippingAddress.postal || "",
             }}
             onSubmit={(values) => {
+              navigate('/payment');
               const data = {
                 name: values.name,
                 address: values.address,
@@ -39,9 +40,9 @@ function ShippingAddressScreen() {
               };
               console.log(data);
               contextDispatch({ type: "USER_SIGNIN", payload: data });
-
               localStorage.setItem("shippingAddress", JSON.stringify(data));
-              navigate("/payment");
+          
+               
             }}
           >
             {(values) => (

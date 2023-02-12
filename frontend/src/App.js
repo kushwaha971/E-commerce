@@ -65,7 +65,7 @@ function App() {
               <Route path="/signup" element={<SignUpScreen />} />
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen/>}/>
-              <Route path="placeorder" element={<PlaceOrderScreen/>}/>
+              <Route path="/placeorder" element={<PlaceOrderScreen/>}/>
             </Routes>
           </main>
           <footer>
