@@ -31,7 +31,7 @@ function ShippingAddressScreen() {
               postal: shippingAddress.postal || "",
             }}
             onSubmit={(values) => {
-              navigate('/payment');
+             
               const data = {
                 name: values.name,
                 address: values.address,
@@ -39,10 +39,9 @@ function ShippingAddressScreen() {
                 postal: values.postal,
               };
               console.log(data);
-              contextDispatch({ type: "USER_SIGNIN", payload: data });
-              localStorage.setItem("shippingAddress", JSON.stringify(data));
-          
-               
+              contextDispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
+              localStorage.setItem("shippingAddress", JSON.stringify(data));   
+              navigate('/placeorder');            
             }}
           >
             {(values) => (
@@ -126,9 +125,9 @@ function ShippingAddressScreen() {
                 />
 
                 <Button
+                   type="submit"
                   variant="contained"
                   color="warning"
-                  type="submit"
                   sx={{ textTransform: "capitalize" }}
                 >
                   Continue
