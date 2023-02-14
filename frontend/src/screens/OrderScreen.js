@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 
+
 import React, { useContext, useEffect, useReducer } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import MessageBox from "../component/MessageBox";
@@ -50,13 +51,16 @@ function OrderScreen() {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
+    
       try {
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await orderAPI.get(`/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
+        console.log("Data",data)
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
+        console.log("Error",err)
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
@@ -76,8 +80,8 @@ function OrderScreen() {
   ) : error ? (
     <MessageBox variant="error">{error}</MessageBox>
   ) : (
-    <>
-      <Typography variant="h5">Order ID {orderId}</Typography>
+    <Box sx={{ margin: "1rem", padding: "1rem" }}>
+      <Typography variant="h6" sx={{marginLeft: '4rem'}}>Order ID {orderId}</Typography>
       <Box
         sx={{
           display: "flex",
@@ -125,7 +129,7 @@ function OrderScreen() {
           <Card sx={{ margin: "2px" }}>
             <CardHeader title="Items" />
             <CardContent>
-              {order.cartItems.map((item) => (
+              {order.orderItems.map((item) => (
                 <Box
                   key={item._id}
                   sx={{
@@ -190,7 +194,7 @@ function OrderScreen() {
           </Card>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }
 
