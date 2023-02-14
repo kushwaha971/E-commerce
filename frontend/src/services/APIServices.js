@@ -10,4 +10,8 @@ export const productStatus = axios.create({
 
 export const cartItemDetails = axios.create({
   baseURL: "/api/products",
-})
+});
+
+export const orderAPI = axios.create({
+  baseURL: "/api/orders",
+});
