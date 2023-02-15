@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react";
 import { Box, CircularProgress, Grid, Stack, Typography } from "@mui/material";
 import { productDetails } from "../services/APIServices";
-import logger from "use-reducer-logger";
+
 import Product from "../component/Product";
 import MessageBox from "../component/MessageBox";
 
@@ -19,7 +19,7 @@ const reducer = (state, action) => {
 };
 
 function HomeScreen() {
-  const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: "",
