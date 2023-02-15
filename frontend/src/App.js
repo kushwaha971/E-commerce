@@ -58,7 +58,7 @@ function App() {
                 <Link to="/signin">Sign In</Link>
               )}
             </div>
-          </header>
+          </header> 
 
           <main>
             <Routes>
