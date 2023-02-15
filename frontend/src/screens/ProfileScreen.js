@@ -9,11 +9,11 @@ import { getError } from "../utils";
 const reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_REQUEST":
-      return { ...state };
+      return { ...state, };
     case "UPDATE_SUCCESS":
-      return { ...state };
+      return { ...state,  };
     case "UPDATE_FAIL":
-      return { ...state };
+      return { ...state, };
 
     default:
       return state;
@@ -24,7 +24,9 @@ function ProfileScreen() {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { userInfo } = state;
 
-  const [{}, dispatch] = useReducer(reducer, {});
+  const [, dispatch] = useReducer(reducer, {
+    
+  });
   return (
     <Box sx={{ maxWidth: "600px", margin: "auto" }}>
       <Typography variant="h4" sx={{ margin: "1rem" }}>
