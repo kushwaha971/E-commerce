@@ -51,6 +51,7 @@ function NavigationBar() {
             <>
               <Tabs
                 sx={{ marginLeft: "auto" }}
+                TabIndicatorProps={{ style: { background: "none" } }}
                 value={value}
                 onChange={(e, val) => setValue(val)}
               >
