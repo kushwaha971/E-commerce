@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import "./App.css";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductScreen from "./screens/ProductScreen";
-import { Badge, Stack, Typography } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Typography } from "@mui/material";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Store } from "./context/Store";
 import CartScreen from "./screens/CartScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -17,6 +17,7 @@ import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import NavigationBar from "./header/NavigationBar";
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -26,7 +27,7 @@ function App() {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
-    window.location.href='/signin'
+    window.location.href = "/signin";
   };
   return (
     <React.Fragment>
@@ -34,31 +35,8 @@ function App() {
         <BrowserRouter>
           <ToastContainer position="bottom-center" limit={1} />
           <header>
-            <div className="header">
-              <Link to="/">Logo</Link>
-              <Link to="/cart">
-                <Stack aria-label="cart">
-                  <Badge
-                    badgeContent={cart.cartItems.reduce(
-                      (acc, curr) => acc + curr.quantity,
-                      0
-                    )}
-                    color="secondary"
-                  >
-                    <ShoppingCartIcon sx={{ color: "white" }} />
-                  </Badge>
-                </Stack>
-              </Link>
-              {userInfo ? (
-                <>
-                  <Typography>{userInfo.name}</Typography>{" "}
-                  <Typography onClick={SignOutHandler}>Sign Out</Typography>
-                </>
-              ) : (
-                <Link to="/signin">Sign In</Link>
-              )}
-            </div>
-          </header> 
+            <NavigationBar />
+          </header>
 
           <main>
             <Routes>
@@ -72,7 +50,7 @@ function App() {
               <Route path="/payment" element={<PaymentMethodScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path="/order/:id" element={<OrderScreen />} />
-              <Route path="/order-history" element={<OrderHistoryScreen/>}/>
+              <Route path="/order-history" element={<OrderHistoryScreen />} />
             </Routes>
           </main>
           <footer>
